@@ -1,0 +1,5 @@
+AddCSLuaFile()
+DeriveGamemode("sandbox")
+
+SWRP = {}
+
