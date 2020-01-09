@@ -6,7 +6,14 @@ if SERVER then
 	end
 
 	function meta:AddXP(amt)
-		self:SetXP(self:GetNW2Int("XP", 0) + amt)
+		self:SetXP(self:GetXP() + amt)
+		
+		if self:GetXP() >= self:XPToLevelUp() then
+			self:AddLevel(1)
+			self:SetXP(self:GetXP() - self:XPToLevelUp())
+
+			if self:GetXP() < 0 then self:SetXP(0) end //just incase :)
+		end
 	end
 
 	function meta:SetLevel(lvl)
@@ -14,8 +21,12 @@ if SERVER then
 	end
 
 	function meta:AddLevel(lvl)
-		self:SetLevel(self:GetNW2Int("Level", 0) + lvl)
+		self:SetLevel(self:GetLevel() + lvl)
 	end
+end
+
+function meta:XPToLevelUp()
+	return (math.pow(1.25, self:GetLevel() - 1)) * 800
 end
 
 function meta:GetXP()
@@ -23,6 +34,6 @@ function meta:GetXP()
 end
 
 function meta:GetLevel()
-	return self:GetNW2Int("Level", 0)
+	return self:GetNW2Int("Level", 1)
 end
 

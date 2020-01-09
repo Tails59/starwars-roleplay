@@ -31,7 +31,6 @@ function BREAKPOINT.MySQL.InsertPlayer(ply)
 	local query = BREAKPOINT.Database:query("INSERT INTO main(steamid) VALUES(\""..ply:SteamID().."\")")
 
 	function query:onSuccess(data)
-		print("added new player!")
 	end
 
 	function query:onError(err)
@@ -67,16 +66,14 @@ function BREAKPOINT.MySQL.FirstEverSpawn(ply)
 
 	if not ply then return end
 
-	local query = BREAKPOINT.Database:query("SELECT EXISTS(SELECT 1 FROM starwarsrp.main WHERE steamid=\""..ply:SteamID().."\")")
-
+	local query = BREAKPOINT.Database:query("SELECT 1 FROM starwarsrp.main WHERE steamid=\""..ply:SteamID().."\"")
+	
 	local val;
 	function query:onSuccess(data)
 		if (data[1] == nil) then
-			val = true
-			print("its fucking here")
+			val = true;
 		else
-			print("or here")
-			val = false
+			val = false;
 		end
 	end
 
@@ -85,7 +82,7 @@ function BREAKPOINT.MySQL.FirstEverSpawn(ply)
 	end
 
 	query:start()
+	query:wait(true)
 
-	print(val)
 	return val;
 end

@@ -22,7 +22,7 @@ local function createTable()
 
 	query:start()
 end
-hook.Add("onDatabaseConnected" ,"createTable", createTable)
+hook.Add("onDatabaseConnected" ,"createLevelTable", createTable)
 
 local function addNewPlayer(ply)
 	local query = BREAKPOINT.Database:query("INSERT INTO levelling(steamid, level, xp) VALUES(\""..ply:SteamID().."\", "..ply:GetLevel()..", "..ply:GetXP()..")")
@@ -36,7 +36,26 @@ local function addNewPlayer(ply)
 
 	query:start()
 end
-hook.Add("playerFirstSpawn", "addNewRecord", addNewPlayer)
+hook.Add("playerFirstSpawn", "addPlayerLevel", addNewPlayer)
+
+local function savePlayer(ply)
+	local query = BREAKPOINT.Database:query([[INSERT INTO levelling(steamid, level, xp) VALUES("]]..ply:SteamID()..[[", ]]..ply:GetLevel()..[[, ]]..ply:GetXP()..[[) ON DUPLICATE KEY UPDATE level=]]..ply:GetLevel()..[[, xp=]]..ply:GetXP())
+
+	function query:onSuccess(data)
+		print(ply:GetLevel())
+		print(ply:GetXP())
+	end
+
+	function query:onError(err)
+		error(err)
+	end
+
+	query:start()
+end
+hook.Add("PlayerDisconnected", "savePlayerXP", savePlayer)
+concommand.Add("savexp", function(ply)
+	savePlayer(ply)
+end)
 
 local function loadPlayer(ply)
 	local query = BREAKPOINT.Database:query("SELECT * FROM levelling WHERE steamid=\""..ply:SteamID().."\"")
