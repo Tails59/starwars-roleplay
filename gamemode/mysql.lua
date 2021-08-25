@@ -3,10 +3,10 @@ require("mysqloo")
 BREAKPOINT.MySQL = {}
 BREAKPOINT.MySQL.Enabled = true
 
-BREAKPOINT.MySQL.host = "37.59.55.185"
-BREAKPOINT.MySQL.user = "tt5yqp0ctI"
-BREAKPOINT.MySQL.pass = "T7D82e2XIR"
-BREAKPOINT.MySQL.database = "tt5yqp0ctI"
+BREAKPOINT.MySQL.host = ""
+BREAKPOINT.MySQL.user = ""
+BREAKPOINT.MySQL.pass = ""
+BREAKPOINT.MySQL.database = ""
 BREAKPOINT.MySQL.port = 3306
 
 BREAKPOINT.Database = BREAKPOINT.Database or nil
